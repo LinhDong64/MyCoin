@@ -196,8 +196,8 @@ const signTxIn= (transaction, txInIndex, privateKey, aUnspentTxOuts)=>{
 exports.signTxIn=signTxIn;
 
 const updateUnspentTxOuts = (aTransactions, aUnspentTxOuts)=>{
-    const newUnspentTxOuts = aTransactions.map((t)
-    =>{
+    const newUnspentTxOuts = aTransactions
+    .map((t)=>{
         return t.txOuts.map((txOut, index)=>{
             return new UnspentTxOut(t.id, index, txOut.address, txOut.amount, )
         });
