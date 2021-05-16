@@ -4,66 +4,57 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link,
 } from "react-router-dom";
-import NavBar from './components/NavBar'
-import BlockchainViewer from './components/pages/BlockchainViewer'
-import { Blockchain } from './blockchain'
-import Setting from './components/pages/Setting'
 import CreateTransaction from './components/pages/CreateTransaction'
 import Login from './components/pages/WalletActions'
+import BlockchainExplorer from './components/BlockchainExplorer'
+import NavBar from './components/NavBar';
+import Block from './components/Block'
 
-const EC = require('elliptic').ec
+const axios = require('axios').default;
+
+// const EC = require('elliptic').ec
 
 class App extends Component {
-  blockchainInstance = new Blockchain();
-  walletKeys = [];
 
   constructor(props) {
     super(props);
-    this.blockchainInstance.difficulty = 1;
-    this.blockchainInstance.minePendingTransactions('my-wallet-address');
-    this.generateWalletKeys();
 
-    this.getBlocks = this.getBlocks.bind(this);
-  }
-
-  getBlocks() {
-    return this.blockchainInstance.chain;
-  }
-
-  generateWalletKeys() {
-    const ec = new EC('secp256k1');
-    const key = ec.genKeyPair();
-
-    this.walletKeys.push({
-      keyObj: key,
-      publicKey: key.getPublic('hex'),
-      privateKey: key.getPrivate('hex')
-    });
+    this.state={
+      blockchain: []
+    }
   }
 
   componentDidMount(){
-    this.setState({
-      publicKey: this.walletKeys.publicKey
-    })
+    axios({
+      method: 'get',
+      url: 'http://localhost:3001/blocks',
+    }).then((res)=>{
+       this.setState({
+         blockchain: res.data
+       })
+    });
   }
 
   render() {
+    const pageTitle = <h3>LinDo Blockchain Explorer</h3>;
     return (
       <Router>
         <div className="App">
           <NavBar></NavBar>
+          {pageTitle}
           <Switch>
             <Route path="/" exact>
-              {/* <BlockchainViewer blocks={this.getBlocks()}></BlockchainViewer> */}
-            <Login></Login>
+              <BlockchainExplorer blockchain={this.state.blockchain}></BlockchainExplorer>
             </Route>
-            <Route path="/setting">
-              <Setting></Setting>
+            <Route path="/block/:id" component={Block}>
+              {/* <Block></Block> */}
             </Route>
             <Route path="/create-transaction">
-              <CreateTransaction fromAddress={this.walletKeys[0].publicKey}></CreateTransaction>
+              <CreateTransaction></CreateTransaction>
+            </Route>
+            <Route path="/login">
+              <Login></Login>
             </Route>
           </Switch>
         </div>
