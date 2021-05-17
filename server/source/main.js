@@ -5,7 +5,7 @@ const fs = require('fs');
 const httpPort = parseInt(process.env.HTTP_PORT) || 3001;
 const cors = require('cors');// To pass original cors
 
-const _ = require("lodash");
+const lodash = require("lodash");
 const blockchain = require("./blockchain");
 const p2p = require("./p2p");
 const transactionPool = require("./transactionPool");
@@ -26,28 +26,15 @@ const initHttpServer = (myHttpPort) => {
 
     app.get('/key', (req, res) => {
         wallet.initWallet();
-        const filename = 'private_key_0';
+        const filename = 'private_key';
         const filePath = `./node/wallet/${filename}`;
         res.download(filePath);
-
     })
 
-    app.post('/', (req, res) => {
-        const privateKey = req.body.privateKey;
-        const testFolder = './node/wallet/';
-
-        fs.readdir(testFolder, (err, files) => {
-            files.forEach(file => {
-               let buffer = fs.readFileSync(`./node/wallet/${file}`, 'utf-8');
-               if(privateKey.localeCompare(buffer.toString()) === 0){
-                   return res.json({'isCorrectKey':true});
-               }
-           });
-           return res.json({'isCorrectKey':false});
-        });
-
-        //return res.json({'isCorrectKey': false});
-    })
+    // app.get('/delete-key', (req, res)=>{
+        // wallet.deleteWallet();
+        // res.send("Deleted");
+    // })
 
     app.get('/blocks', (req, res) => {
         res.send(blockchain.getBlockchain());
@@ -67,7 +54,7 @@ const initHttpServer = (myHttpPort) => {
     });
 
     app.get('/address/:address', (req, res) => {
-        const unspentTxOuts = _.filter(blockchain.getUnspentTxOuts(), (uTxO) => uTxO.address === req.params.address);
+        const unspentTxOuts = lodash.filter(blockchain.getUnspentTxOuts(), (uTxO) => uTxO.address === req.params.address);
         res.send({ 'unspentTxOuts': unspentTxOuts });
     });
 
@@ -117,7 +104,7 @@ const initHttpServer = (myHttpPort) => {
         const address = req.body.address;
         const amount = req.body.amount;
         try {
-            const resp = blockchain_1.generatenextBlockWithTransaction(address, amount);
+            const resp = blockchain.generatenextBlockWithTransaction(address, amount);
             res.send(resp);
         }
         catch (e) {
