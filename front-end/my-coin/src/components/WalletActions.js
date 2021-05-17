@@ -3,6 +3,7 @@ import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
+import {Link} from 'react-router-dom'
 const axios = require('axios').default;
 
 
@@ -12,7 +13,6 @@ class Login extends Component {
         this.state={
             value: '',
         }
-        this.handleAccessWallet=this.handleAccessWallet.bind(this);
         this.handleOnChange=this.handleOnChange.bind(this);
     }
 
@@ -21,18 +21,6 @@ class Login extends Component {
             value: e.target.value
         })
     }
-
-    handleAccessWallet(){
-        let value = this.state.value;
-
-        axios({
-            method: 'post',
-            url: 'http://localhost:3001/',
-            data: {'privateKey': value.toString()}
-          }).then((res)=>{
-              console.log(res);
-          });
-     }
 
     render() {
         return (
@@ -44,9 +32,7 @@ class Login extends Component {
                         </input>
                     </CardContent>
                     <CardActions style={styles.cardAction}>
-                        <Button variant="contained" color="primary" onClick={this.handleAccessWallet}>
-                            Access Wallet
-                        </Button>
+                        <Link to="/wallet"> Access Wallet </Link>
                         <Button variant="outlined" color="primary" download href='http://localhost:3001/key'>
                             Create Wallet
                         </Button>

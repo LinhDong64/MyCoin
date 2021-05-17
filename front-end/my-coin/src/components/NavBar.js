@@ -18,11 +18,8 @@ class NavBar extends Component {
                                 <li className="nav-item" style={styles.navItem}>
                                     <Link to='/' className="btn btn-outline-primary">Home</Link>
                                 </li>
-                                <li className="nav-item">
-                                    <Link to='/create-transaction' className="btn btn-outline-primary">Create transaction</Link>
-                                </li>
                                 <li>
-                                    <Link to="/login" className="btn btn-outline-primary">Access Wallet</Link>
+                                    <Link to="/access" className="btn btn-outline-primary">Access Wallet</Link>
                                 </li>
                             </ul>
                         </div>

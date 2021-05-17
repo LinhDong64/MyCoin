@@ -5,11 +5,13 @@ import {
   Switch,
   Route,
 } from "react-router-dom";
-import CreateTransaction from './components/pages/CreateTransaction'
-import Login from './components/pages/WalletActions'
+import Login from './components/WalletActions'
 import BlockchainExplorer from './components/BlockchainExplorer'
 import NavBar from './components/NavBar';
-import Block from './components/Block'
+import Block from './components/Block';
+import Wallet from './components/Wallet'
+import Address from './components/Address'
+import Transaction from './components/Transaction'
 
 const axios = require('axios').default;
 
@@ -23,9 +25,10 @@ class App extends Component {
     this.state={
       blockchain: []
     }
+    this.getBlockChain=this.getBlockChain.bind(this);
   }
 
-  componentDidMount(){
+  getBlockChain(){
     axios({
       method: 'get',
       url: 'http://localhost:3001/blocks',
@@ -36,26 +39,27 @@ class App extends Component {
     });
   }
 
+  componentDidMount(){
+    this.getBlockChain();
+  }
+
   render() {
-    const pageTitle = <h3>LinDo Blockchain Explorer</h3>;
+
     return (
       <Router>
         <div className="App">
           <NavBar></NavBar>
-          {pageTitle}
           <Switch>
             <Route path="/" exact>
               <BlockchainExplorer blockchain={this.state.blockchain}></BlockchainExplorer>
             </Route>
-            <Route path="/block/:id" component={Block}>
-              {/* <Block></Block> */}
-            </Route>
-            <Route path="/create-transaction">
-              <CreateTransaction></CreateTransaction>
-            </Route>
-            <Route path="/login">
+            <Route path="/block/:id" component={Block}/>
+            <Route path="/address/:id" component={Address}/>
+            <Route path="/transaction/:id" component={Transaction}/>
+            <Route path="/access">
               <Login></Login>
             </Route>
+            <Route path="/wallet" component={Wallet}/>
           </Switch>
         </div>
       </Router>

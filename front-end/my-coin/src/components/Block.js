@@ -79,7 +79,7 @@ class Block extends Component {
                 txOutsEle = tx.txOuts.map((txOut, index) => {
                     return <div key={index}>
                         <Typography>
-                            <Link to="/address" style={styles.wrapText}>{txOut.address}</Link>
+                            <Link to={{ pathname: `/address/${txOut.address}` }} style={styles.wrapText}>{txOut.address}</Link>
                         </Typography>
                         <Typography>
                             <span>amount: {txOut.amount}</span>
@@ -88,7 +88,7 @@ class Block extends Component {
                 });
 
                 return <div style={styles.cardContainer} key={index}>
-                    <h3>Transactions</h3>
+                    <h3>Transaction</h3>
                     <Card style={styles.cardStyle}>
                         <CardContent>
                             <Typography color="textSecondary">
