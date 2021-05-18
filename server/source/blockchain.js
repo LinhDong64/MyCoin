@@ -110,6 +110,7 @@ const generatenextBlockWithTransaction = (receiverAddress, amount) => {
     return generateRawNextBlock(blockData);
 };
 exports.generatenextBlockWithTransaction = generatenextBlockWithTransaction;
+
 const findBlock = (index, previousHash, timestamp, data, difficulty) => {
     let nonce = 0;
     while (true) {
@@ -120,6 +121,7 @@ const findBlock = (index, previousHash, timestamp, data, difficulty) => {
         nonce++;
     }
 };
+
 const getAccountBalance = () => {
     return wallet_1.getBalance(wallet_1.getPublicFromWallet(), getUnspentTxOuts());
 };

@@ -24,17 +24,18 @@ const initHttpServer = (myHttpPort) => {
         }
     });
 
+    app.post('/access-wallet', (req, res)=>{
+        const key = req.body.key;
+        wallet.updatePrivatKeyFile(key);
+        res.json({'state': true});
+    })
+
     app.get('/key', (req, res) => {
         wallet.initWallet();
         const filename = 'private_key';
         const filePath = `./node/wallet/${filename}`;
         res.download(filePath);
     })
-
-    // app.get('/delete-key', (req, res)=>{
-        // wallet.deleteWallet();
-        // res.send("Deleted");
-    // })
 
     app.get('/blocks', (req, res) => {
         res.send(blockchain.getBlockchain());

@@ -10,6 +10,14 @@ const getPrivateFromWallet = () => {
     const buffer = fs_1.readFileSync(privateKeyLocation, 'utf8');
     return buffer.toString();
 };
+// ===========================================================================
+// privateKey: string
+const updatePrivatKeyFile=(privateKey)=>{
+    deleteWallet();
+    fs_1.writeFileSync(privateKeyLocation, privateKey);
+}
+exports.updatePrivatKeyFile = updatePrivatKeyFile;
+// ===========================================================================
 exports.getPrivateFromWallet = getPrivateFromWallet;
 const getPublicFromWallet = () => {
     const privateKey = getPrivateFromWallet();
